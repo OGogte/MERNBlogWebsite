@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
-require('dotenv').config();
 const User = require('./models/User');
 const Post = require('./models/Post');
 const bcrypt = require('bcryptjs');
@@ -11,11 +10,11 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require('fs');
-
+require('dotenv').config();
 const salt = bcrypt.genSaltSync(10);
 const secret = process.env.JWT_SECRET_KEY;
 
-app.use(cors({ credentials: true, origin: 'https://master--mernblogom.netlify.app' }));
+app.use(cors({ credentials: true, origin: 'https://mernblogom.netlify.app/' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
@@ -108,7 +107,7 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
         if (!isAuthor) {
             return res.status(400).json('you are not the author');
         }
-        await postDoc.updateOne({
+        await postDoc.update({
             title,
             summary,
             content,
