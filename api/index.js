@@ -22,6 +22,23 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 
 mongoose.connect(process.env.MY_MONGO_URL);
 
+
+const verifyToken = (req, res, next) => {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json('Unauthorized: No token provided');
+    }
+  
+    jwt.verify(token, secret, {}, (err, decoded) => {
+      if (err) {
+        return res.status(401).json('Unauthorized: Invalid token');
+      }
+      req.user = decoded;
+      next();
+    });
+  };
+
+  
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
     try {

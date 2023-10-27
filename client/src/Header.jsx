@@ -11,7 +11,7 @@ export default function Header() {
                 setUserInfo(userInfo);
             });
           });
-        }, []);
+        });
         function logout() {
             fetch('https://myblogwebsite-qlns.onrender.com/logout', {
                 credentials: 'include',
