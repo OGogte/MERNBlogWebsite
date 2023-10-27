@@ -15,7 +15,7 @@ const fs = require('fs');
 const salt = bcrypt.genSaltSync(10);
 const secret = process.env.JWT_SECRET_KEY;
 
-app.use(cors({ credentials: true, origin: 'https://master--friendly-clafoutis-bb142b.netlify.app' }));
+app.use(cors({ credentials: true, origin: 'https://master--mernblogom.netlify.app/' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
