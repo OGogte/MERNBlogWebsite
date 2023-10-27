@@ -26,19 +26,19 @@ mongoose.connect(process.env.MY_MONGO_URL);
 const verifyToken = (req, res, next) => {
     const { token } = req.cookies;
     if (!token) {
-      return res.status(401).json('Unauthorized: No token provided');
+        return res.status(401).json('Unauthorized: No token provided');
     }
-  
-    jwt.verify(token, secret, {}, (err, decoded) => {
-      if (err) {
-        return res.status(401).json('Unauthorized: Invalid token');
-      }
-      req.user = decoded;
-      next();
-    });
-  };
 
-  
+    jwt.verify(token, secret, {}, (err, decoded) => {
+        if (err) {
+            return res.status(401).json('Unauthorized: Invalid token');
+        }
+        req.user = decoded;
+        next();
+    });
+};
+
+
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -71,7 +71,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.get('/profile', (req, res) => {
+app.get('/profile', verifyToken, (req, res) => {
     const { token } = req.cookies;
     jwt.verify(token, secret, {}, (err, info) => {
         if (err) throw err;
@@ -83,7 +83,7 @@ app.post('/logout', (req, res) => {
     res.cookie('token', '').json('ok');
 });
 
-app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
+app.post('/post', verifyToken, uploadMiddleware.single('file'), async (req, res) => {
     const { originalname, path } = req.file;
     const parts = originalname.split('.');
     const ext = parts[parts.length - 1];
@@ -106,7 +106,7 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
 
 });
 
-app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
+app.put('/post', verifyToken, uploadMiddleware.single('file'), async (req, res) => {
     let newPath = null;
     if (req.file) {
         const { originalname, path } = req.file;
@@ -151,5 +151,11 @@ app.get('/post/:id', async (req, res) => {
     const postDoc = await Post.findById(id).populate('author', ['username']);
     res.json(postDoc);
 })
-
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json('Unauthorized: No token provided');
+    } else {
+        next(err);
+    }
+});
 app.listen(4000);
