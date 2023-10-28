@@ -14,7 +14,7 @@ require('dotenv').config();
 const salt = bcrypt.genSaltSync(10);
 const secret = process.env.JWT_SECRET_KEY;
 
-app.use(cors({ credentials: true, origin: 'https://master--mernblogom.netlify.app' }));
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
@@ -55,15 +55,8 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
-
-    if (!token) {
-        return res.status(401).json('Token not provided');
-    }
-
     jwt.verify(token, secret, {}, (err, info) => {
-        if (err) {
-            return res.status(401).json('Invalid token');
-        }
+        if (err) throw err;
         res.json(info);
     });
 });
