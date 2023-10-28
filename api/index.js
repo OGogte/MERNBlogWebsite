@@ -5,7 +5,7 @@ const User = require('./models/User');
 const Post = require('./models/Post');
 const bcrypt = require('bcryptjs');
 const app = express();
-
+const session = require('express-session');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
