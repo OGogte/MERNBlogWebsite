@@ -5,7 +5,7 @@ const User = require('./models/User');
 const Post = require('./models/Post');
 const bcrypt = require('bcryptjs');
 const app = express();
-const session = require('express-session');
+const session = require('cookie-session');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
@@ -19,7 +19,7 @@ app.use(cors({ credentials: true, origin: 'https://master--mernblogom.netlify.ap
 app.use(express.json());
 app.use(
     session({
-      secret: process.env.JWT_SECRET_KEY_SECRET,
+      secret: 'omgomgomgomg',
       resave: true,
       saveUninitialized: false,
       cookie: {
