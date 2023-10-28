@@ -5,6 +5,7 @@ const User = require('./models/User');
 const Post = require('./models/Post');
 const bcrypt = require('bcryptjs');
 const app = express();
+app.set("trust proxy", 1);
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
@@ -16,6 +17,7 @@ const secret = process.env.JWT_SECRET_KEY;
 
 app.use(cors({ credentials: true, origin: 'https://master--mernblogom.netlify.app' }));
 app.use(express.json());
+
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
