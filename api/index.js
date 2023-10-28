@@ -23,7 +23,7 @@ app.use(
       resave: true,
       saveUninitialized: false,
       cookie: {
-        sameSite: none, // must be 'none' to enable cross-site delivery
+        sameSite: 'none', // must be 'none' to enable cross-site delivery
         secure: true, // must be true if sameSite='none'
       }
     })
