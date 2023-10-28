@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(
     session({
       secret: 'omgomgomgomg',
+      domain: '.master--mernblogom.netlify.app/create'
       resave: true,
       saveUninitialized: false,
       cookie: {
