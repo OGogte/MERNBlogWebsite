@@ -17,6 +17,17 @@ const secret = process.env.JWT_SECRET_KEY;
 
 app.use(cors({ credentials: true, origin: 'https://master--mernblogom.netlify.app' }));
 app.use(express.json());
+app.use(
+    session({
+      secret: process.env.JWT_SECRET_KEY_SECRET,
+      resave: true,
+      saveUninitialized: false,
+      cookie: {
+        sameSite: none // must be 'none' to enable cross-site delivery
+        secure: true, // must be true if sameSite='none'
+      }
+    })
+ );
 app.set("trust proxy", 1);
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
